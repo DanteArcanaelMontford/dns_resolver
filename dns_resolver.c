@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+
+void create_line(int);
+
+int main(int argc, char *argv[]) {
+  char *DNS = argv[1];
+  struct  hostent *target = gethostbyname(DNS);
+  
+  if(argc < 2 || DNS == NULL || target == NULL) {
+    create_line(10);
+    printf("[+] DNS Resolver\n");
+    printf("[+] Usage: %s HOST\n", argv[0]);
+    printf("[+] Usecase: %s www.mysite.com\n", argv[0]);
+    create_line(10);
+    return 1;
+  }
+
+  char *ip = inet_ntoa((*(struct in_addr *)target->h_addr_list[0]));
+
+  create_line(10);
+  printf("[+] DNS %s has IP %s\n", DNS, ip);
+  create_line(10);
+  return 0;
+}
+
+/**************************************************
+*                    Functions                    *
+***************************************************/ 
+
+void create_line(int line_length) {
+  int i;
+  for(i = 0; i < line_length; i++) printf("#####");
+  printf("\n");
+}
